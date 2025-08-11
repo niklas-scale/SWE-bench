@@ -65,12 +65,27 @@ def make_run_report(
         if report_file.exists():
             # If report file exists, then the instance has been run
             completed_ids.add(instance_id)
-            report = json.loads(report_file.read_text())
-            if report[instance_id]["resolved"]:
-                # Record if the instance was resolved
-                resolved_ids.add(instance_id)
-            else:
-                unresolved_ids.add(instance_id)
+            try:
+                report_content = report_file.read_text().strip()
+                if not report_content:
+                    print(f"Warning: Empty report file for {instance_id}")
+                    error_ids.add(instance_id)
+                    continue
+                report = json.loads(report_content)
+                if report[instance_id]["resolved"]:
+                    # Record if the instance was resolved
+                    resolved_ids.add(instance_id)
+                else:
+                    unresolved_ids.add(instance_id)
+            except json.JSONDecodeError as e:
+                print(f"Warning: Invalid JSON in report file for {instance_id}: {e}")
+                error_ids.add(instance_id)
+            except KeyError as e:
+                print(f"Warning: Missing key in report file for {instance_id}: {e}")
+                error_ids.add(instance_id)
+            except Exception as e:
+                print(f"Warning: Error reading report file for {instance_id}: {e}")
+                error_ids.add(instance_id)
         else:
             # Otherwise, the instance was not run successfully
             error_ids.add(instance_id)
