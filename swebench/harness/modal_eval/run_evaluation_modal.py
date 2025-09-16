@@ -186,6 +186,7 @@ class ModalSandboxRuntime:
             .run_commands("apt update")
             .env({"DEBIAN_FRONTEND": "noninteractive", "TZ": "Etc/UTC"})
             .apt_install(
+                "ghapi=1.0.6",
                 "wget",
                 "git",
                 "build-essential",
