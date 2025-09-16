@@ -184,9 +184,13 @@ class ModalSandboxRuntime:
         return (
             modal.Image.from_registry("ubuntu:22.04", add_python="3.11")
             .run_commands("apt update")
-            .env({"DEBIAN_FRONTEND": "noninteractive", "TZ": "Etc/UTC"})
+            .env({
+                "DEBIAN_FRONTEND": "noninteractive", 
+                "TZ": "Etc/UTC",
+                "GIT_PYTHON_REFRESH": "quiet",
+                "GIT_PYTHON_GIT_EXECUTABLE": "/usr/bin/git"
+            })
             .apt_install(
-                "ghapi=1.0.6",
                 "wget",
                 "git",
                 "build-essential",
