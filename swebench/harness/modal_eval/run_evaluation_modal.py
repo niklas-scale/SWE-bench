@@ -27,7 +27,7 @@ REMOTE_SANDBOX_ENTRYPOINT_PATH = f"/root/{SANDBOX_ENTRYPOINT}.py"
 
 app = modal.App("swebench-evaluation")
 
-swebench_image = modal.Image.debian_slim().pip_install("swebench", "tenacity", "ghapi=1.0.6")
+swebench_image = modal.Image.debian_slim().pip_install("swebench", "tenacity", "ghapi==1.0.6")
 
 from swebench.harness.constants import (
     APPLY_PATCH_FAIL,
